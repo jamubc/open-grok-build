@@ -4,7 +4,9 @@
 ![Platform](https://img.shields.io/badge/platform-macOS-lightgrey?logo=apple)
 ![License](https://img.shields.io/github/license/jamubc/open-grok-build)
 
-A unified collection of lightweight, zero-dependency connectors giving **Grok Build** native access to third-party language models. These connectors bypass background daemons like `CLIProxyAPI` and instead run Node-native inline proxy servers on-the-fly.
+Give Grok Build access to third-party models natively, without background services.
+
+These connectors spin up light, zero-dependency inline HTTP proxies on-the-fly only when Grok is running.
 
 ## Connectors & Packages
 
@@ -12,7 +14,7 @@ A unified collection of lightweight, zero-dependency connectors giving **Grok Bu
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | <img src="assets/gemini_logo.png" height="24" valign="middle"> **`grok-agy`** | [![npm](https://img.shields.io/npm/v/agy-for-grok-build?logo=npm&logoColor=white&color=339933)](https://www.npmjs.com/package/agy-for-grok-build) | [agy-for-grok-build](https://github.com/jamubc/agy-for-grok-build) | [![GitHub issues](https://img.shields.io/github/issues/jamubc/agy-for-grok-build?color=red)](https://github.com/jamubc/agy-for-grok-build/issues) | [![GitHub downloads](https://img.shields.io/github/downloads/jamubc/agy-for-grok-build/total?color=blue)](https://github.com/jamubc/agy-for-grok-build/releases) | `gemini-3.5-flash` |
 | <img src="assets/codex_logo.png" height="24" valign="middle"> **`grok-codex`** | [![npm](https://img.shields.io/npm/v/codex-for-grok-build?logo=npm&logoColor=white&color=339933)](https://www.npmjs.com/package/codex-for-grok-build) | [codex-for-grok-build](https://github.com/jamubc/codex-for-grok-build) | [![GitHub issues](https://img.shields.io/github/issues/jamubc/codex-for-grok-build?color=red)](https://github.com/jamubc/codex-for-grok-build/issues) | [![GitHub downloads](https://img.shields.io/github/downloads/jamubc/codex-for-grok-build/total?color=blue)](https://github.com/jamubc/codex-for-grok-build/releases) | `gpt-5.5` |
-| <img src="assets/deepseek_logo.png" height="24" valign="middle"> **`grok-deepseek`** | [![npm](https://img.shields.io/npm/v/deepseek-for-grok-build?logo=npm&logoColor=white&color=339933)](https://www.npmjs.com/package/deepseek-for-grok-build) | [deepseek-for-grok-build](https://github.com/jamubc/deepseek-for-grok-build) | [![GitHub issues](https://img.shields.io/github/issues/jamubc/deepseek-for-grok-build?color=red)](https://github.com/jamubc/deepseek-for-grok-build/issues) | [![GitHub downloads](https://img.shields.io/github/downloads/jamubc/deepseek-for-grok-build/total?color=blue)](https://github.com/jamubc/deepseek-for-grok-build/releases) | `deepseek-v4-flash` |
+| <img src="assets/deepseek_logo.png" height="24" valign="middle"> **`grok-deepseek`** | [![npm](https://img.shields.io/npm/v/deepseek-for-grok-build?logo=npm&logoColor=white&color=339933)](https://www.npmjs.com/package/deepseek-for-grok-build) | [deepseek-for-grok-build](https://github.com/jamubc/deepseek-for-grok-build) | [![GitHub issues](https://img.shields.io/github/issues/jamubc/deepseek-for-grok-build?color=red)](https://github.com/jamubc/deepseek-for-grok-build/issues) | [![GitHub downloads](https://img.shields.io/github/downloads/deepseek-for-grok-build/total?color=blue)](https://github.com/jamubc/deepseek-for-grok-build/releases) | `deepseek-v4-flash` |
 
 
 ---
@@ -26,10 +28,10 @@ By cloning the parent repository `open-grok-build`, you get access to a root-lev
 ```
 
 ### Features
-* **📊 Live Status Monitor**: Checks the installation status of all connectors and reports their active default models.
-* **🔄 Active Model Switcher**: Swap between connectors (`agy`, `codex`, `deepseek`) as the active default model in your `~/.grok/config.toml` with a single press.
-* **⚙️ Option Adjuster**: Switch default models inside each connector (e.g. `gpt-5.5` vs `gpt-5.4` on Codex, or `gemini-3.5-flash` vs `gemini-3-pro` on AGY).
-* **🚀 Quick Installer**: Install, re-install, or setup all connectors locally with execution logs rendered inline.
+* **Status Monitor**: Checks the installation status of all connectors and reports their active default models.
+* **Active Model Switcher**: Swap between connectors (`agy`, `codex`, `deepseek`) as the active default model in your `~/.grok/config.toml` with a single press.
+* **Option Adjuster**: Switch default models inside each connector (e.g. `gpt-5.5` vs `gpt-5.4` on Codex, or `gemini-3.5-flash` vs `gemini-3-pro` on AGY).
+* **Quick Installer**: Install, re-install, or setup all connectors locally with execution logs rendered inline.
 
 ---
 
