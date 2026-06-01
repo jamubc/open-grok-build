@@ -1,0 +1,63 @@
+{
+  "agy": {
+    "type": "custom",
+    "dir": "agy",
+    "name": "Antigravity (inline)",
+    "label": "AGY (Antigravity)",
+    "description": "Gemini models via Antigravity CLI OAuth",
+    "defaultModel": "gemini-3.5-flash",
+    "models": [
+      "gemini-3.5-flash",
+      "gemini-3-pro",
+      "gemini-3-pro-thinking",
+      "gemini-2.5-pro",
+      "gemini-2.5-flash"
+    ],
+    "logo": "gemini_logo.png"
+  },
+  "codex": {
+    "type": "custom",
+    "dir": "codex",
+    "name": "Codex (inline)",
+    "label": "Codex",
+    "description": "Codex models via CLIProxyAPI OAuth",
+    "defaultModel": "gpt-5.5",
+    "models": [
+      "gpt-5.5",
+      "gpt-5.4",
+      "gpt-5.4-mini",
+      "gpt-5.3-codex",
+      "gpt-5.2"
+    ],
+    "logo": "codex_logo.png"
+  },
+  "deepseek": {
+    "type": "passthrough",
+    "name": "DeepSeek",
+    "label": "DeepSeek",
+    "description": "DeepSeek API direct compatible-mode integration",
+    "defaultModel": "deepseek-v4-flash",
+    "models": [
+      "deepseek-v4-flash",
+      "deepseek-v4-pro"
+    ],
+    "baseUrl": "https://api.deepseek.com",
+    "envKey": "DEEPSEEK_API_KEY",
+    "logo": "deepseek_logo.png"
+  },
+  "qwen": {
+    "type": "passthrough",
+    "name": "Qwen Coder",
+    "label": "Qwen (Alibaba)",
+    "description": "Alibaba DashScope Qwen2.5-Coder models",
+    "defaultModel": "qwen2.5-coder-32b-instruct",
+    "models": [
+      "qwen2.5-coder-32b-instruct",
+      "qwen2.5-coder-7b-instruct",
+      "qwen2.5-coder-1.5b-instruct"
+    ],
+    "baseUrl": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+    "envKey": "DASHSCOPE_API_KEY",
+    "logo": "qwen_logo.png"
+  }
+}

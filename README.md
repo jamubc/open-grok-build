@@ -15,10 +15,12 @@ All connectors are distributed in a single, unified npm package `open-grok-build
 
 | Command | Logo | Default Model | Config Snippet | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| **`grok-agy`** | <img src="assets/gemini_logo.png" height="24" valign="middle"> | `gemini-3.5-flash` | [toml](agy/templates/grok-config-snippet.toml) | Gemini models via Antigravity CLI OAuth |
-| **`grok-codex`** | <img src="assets/codex_logo.png" height="24" valign="middle"> | `gpt-5.5` | [toml](codex/templates/grok-config-snippet.toml) | Codex models via CLIProxyAPI OAuth |
-| **`grok-deepseek`** | <img src="assets/deepseek_logo.png" height="24" valign="middle"> | `deepseek-v4-flash` | [toml](deepseek/templates/grok-config-snippet.toml) | DeepSeek API direct compatible-mode integration |
-| **`grok-qwen`** | <img src="assets/qwen_logo.png" height="24" valign="middle"> | `qwen2.5-coder-32b-instruct` | [toml](qwen/templates/grok-config-snippet.toml) | Alibaba DashScope Qwen2.5-Coder models |
+| **`grok-agy`** | <img src="assets/gemini_logo.png" height="24" valign="middle"> | `gemini-3.5-flash` | [toml](providers/agy/templates/grok-config-snippet.toml) | Gemini models via Antigravity CLI OAuth |
+| **`grok-codex`** | <img src="assets/codex_logo.png" height="24" valign="middle"> | `gpt-5.5` | [toml](providers/codex/templates/grok-config-snippet.toml) | Codex models via CLIProxyAPI OAuth |
+| **`grok-deepseek`** | <img src="assets/deepseek_logo.png" height="24" valign="middle"> | `deepseek-v4-flash` | [manifest](providers/providers.json) | DeepSeek API direct compatible-mode integration |
+| **`grok-qwen`** | <img src="assets/qwen_logo.png" height="24" valign="middle"> | `qwen2.5-coder-32b-instruct` | [manifest](providers/providers.json) | Alibaba DashScope Qwen2.5-Coder models |
+
+> The full connector list is the single source of truth in [`providers/providers.json`](providers/providers.json). See [CONTRIBUTING.md](CONTRIBUTING.md) to add one.
 
 ---
 
@@ -58,17 +60,11 @@ npx open-grok-build all        # Installs all connectors at once
 ## Getting Started
 
 ### Local Setup (Clone)
-To clone this monorepo along with all its submodules:
+Everything lives in this one repository — no submodules to initialize:
 
 ```bash
-git clone --recursive https://github.com/jamubc/open-grok-build.git
+git clone https://github.com/jamubc/open-grok-build.git
 cd open-grok-build
-```
-
-If you already cloned without the submodules:
-
-```bash
-git submodule update --init --recursive
 ```
 
 ### Global Install

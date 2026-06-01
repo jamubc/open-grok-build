@@ -1,0 +1,7 @@
+[model.agy]
+model = "gemini-3.5-flash"
+base_url = "http://127.0.0.1:8318/v1"
+name = "Antigravity (inline)"
+env_key = "GROK_AGY_PROXY_API_KEY"
+api_backend = "chat_completions"
+auth_scheme = "bearer"
