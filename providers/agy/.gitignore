@@ -1,0 +1,7 @@
+.DS_Store
+*.bak
+*.tmp
+.env
+grok-agy.env
+antigravity_oauth_*.json
+node_modules
