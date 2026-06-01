@@ -3,18 +3,17 @@
 ![Status](https://img.shields.io/badge/status-active-green)
 ![Platform](https://img.shields.io/badge/platform-macOS-lightgrey?logo=apple)
 ![License](https://img.shields.io/github/license/jamubc/open-grok-build)
-[![GitHub issues](https://img.shields.io/github/issues/jamubc/open-grok-build)](https://github.com/jamubc/open-grok-build/issues)
-[![GitHub downloads](https://img.shields.io/github/downloads/jamubc/open-grok-build/total)](https://github.com/jamubc/open-grok-build/releases)
 
 A unified collection of lightweight, zero-dependency connectors giving **Grok Build** native access to third-party language models. These connectors bypass background daemons like `CLIProxyAPI` and instead run Node-native inline proxy servers on-the-fly.
 
 ## Connectors & Packages
 
-| Command | npm Package | Repository | Default Model |
-| :--- | :--- | :--- | :--- |
-| ⚡ **`grok-agy`** | [![npm](https://img.shields.io/npm/v/agy-for-grok-build?logo=npm&logoColor=white&color=339933)](https://www.npmjs.com/package/agy-for-grok-build) | [agy-for-grok-build](https://github.com/jamubc/agy-for-grok-build) | `gemini-3.5-flash` |
-| 🧠 **`grok-codex`** | [![npm](https://img.shields.io/npm/v/codex-for-grok-build?logo=npm&logoColor=white&color=339933)](https://www.npmjs.com/package/codex-for-grok-build) | [codex-for-grok-build](https://github.com/jamubc/codex-for-grok-build) | `gpt-5.5` |
-| 🚀 **`grok-deepseek`** | [![npm](https://img.shields.io/npm/v/deepseek-for-grok-build?logo=npm&logoColor=white&color=339933)](https://www.npmjs.com/package/deepseek-for-grok-build) | [deepseek-for-grok-build](https://github.com/jamubc/deepseek-for-grok-build) | `deepseek-v4-flash` |
+| Command | npm Package | Repository | Issues | Downloads | Default Model |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| ⚡ **`grok-agy`** | [![npm](https://img.shields.io/npm/v/agy-for-grok-build?logo=npm&logoColor=white&color=339933)](https://www.npmjs.com/package/agy-for-grok-build) | [agy-for-grok-build](https://github.com/jamubc/agy-for-grok-build) | [![GitHub issues](https://img.shields.io/github/issues/jamubc/agy-for-grok-build?color=red)](https://github.com/jamubc/agy-for-grok-build/issues) | [![GitHub downloads](https://img.shields.io/github/downloads/jamubc/agy-for-grok-build/total?color=blue)](https://github.com/jamubc/agy-for-grok-build/releases) | `gemini-3.5-flash` |
+| 🧠 **`grok-codex`** | [![npm](https://img.shields.io/npm/v/codex-for-grok-build?logo=npm&logoColor=white&color=339933)](https://www.npmjs.com/package/codex-for-grok-build) | [codex-for-grok-build](https://github.com/jamubc/codex-for-grok-build) | [![GitHub issues](https://img.shields.io/github/issues/jamubc/codex-for-grok-build?color=red)](https://github.com/jamubc/codex-for-grok-build/issues) | [![GitHub downloads](https://img.shields.io/github/downloads/jamubc/codex-for-grok-build/total?color=blue)](https://github.com/jamubc/codex-for-grok-build/releases) | `gpt-5.5` |
+| 🚀 **`grok-deepseek`** | [![npm](https://img.shields.io/npm/v/deepseek-for-grok-build?logo=npm&logoColor=white&color=339933)](https://www.npmjs.com/package/deepseek-for-grok-build) | [deepseek-for-grok-build](https://github.com/jamubc/deepseek-for-grok-build) | [![GitHub issues](https://img.shields.io/github/issues/jamubc/deepseek-for-grok-build?color=red)](https://github.com/jamubc/deepseek-for-grok-build/issues) | [![GitHub downloads](https://img.shields.io/github/downloads/jamubc/deepseek-for-grok-build/total?color=blue)](https://github.com/jamubc/deepseek-for-grok-build/releases) | `deepseek-v4-flash` |
+
 
 ---
 
