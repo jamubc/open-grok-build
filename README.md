@@ -7,6 +7,9 @@
 
 Give Grok Build access to third-party models natively, without background services.
 
+<img width="781" height="243" alt="Screenshot 2026-06-03 at 4 25 10 PM" src="https://github.com/user-attachments/assets/b861d3b6-f0b0-4287-a18c-439378f7337b" />
+
+
 These connectors spin up light, zero-dependency inline HTTP proxies on-the-fly only when Grok is running.
 
 ## Connectors
