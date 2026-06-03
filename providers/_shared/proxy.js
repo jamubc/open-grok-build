@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const http = require('http');
+const crypto = require('crypto');
 const { spawn } = require('child_process');
 const { StringDecoder } = require('string_decoder');
 const { loadEnvFile, readKey } = require('./env');
@@ -206,18 +207,11 @@ function runDaemon(port, expectedKey, backendBin, models, format, spawnArgs) {
   }
 
   const server = http.createServer((req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', '*');
-    res.setHeader('Access-Control-Allow-Methods', '*');
-
-    if (req.method === 'OPTIONS') {
-      res.writeHead(200);
-      res.end();
-      return;
-    }
-
     const authHeader = req.headers['authorization'] || '';
-    if (authHeader !== `Bearer ${expectedKey}`) {
+    const expected = `Bearer ${expectedKey}`;
+    const authHeaderHash = crypto.createHash('sha256').update(authHeader).digest();
+    const expectedHash = crypto.createHash('sha256').update(expected).digest();
+    if (!crypto.timingSafeEqual(authHeaderHash, expectedHash)) {
       res.writeHead(401, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: { message: 'Unauthorized: Invalid API Key' } }));
       return;
@@ -296,10 +290,19 @@ function runDaemon(port, expectedKey, backendBin, models, format, spawnArgs) {
           stdio: ['ignore', 'pipe', 'pipe']
         });
 
+        // 10-minute watchdog timeout
+        const watchdog = setTimeout(() => {
+          if (!child.killed) {
+            try { child.kill('SIGKILL'); } catch {}
+          }
+        }, 10 * 60 * 1000);
+        watchdog.unref();
+
         let stderr = '';
         child.stderr.on('data', chunk => { stderr += chunk.toString(); });
 
         const killChild = () => {
+          clearTimeout(watchdog);
           if (!child.killed) {
             try { child.kill('SIGTERM'); } catch {}
           }
@@ -335,6 +338,7 @@ function runDaemon(port, expectedKey, backendBin, models, format, spawnArgs) {
             });
 
             child.on('close', code => {
+              clearTimeout(watchdog);
               if (res.writableEnded || res.destroyed) return;
               const remaining = decoder.end();
               if (remaining) {
@@ -396,6 +400,7 @@ function runDaemon(port, expectedKey, backendBin, models, format, spawnArgs) {
             });
 
             child.on('close', code => {
+              clearTimeout(watchdog);
               if (res.writableEnded || res.destroyed) return;
               buffer += decoder.end();
               if (buffer.trim()) {
@@ -435,6 +440,7 @@ function runDaemon(port, expectedKey, backendBin, models, format, spawnArgs) {
           }
 
           child.on('error', err => {
+            clearTimeout(watchdog);
             if (res.writableEnded || res.destroyed) return;
             res.write(`data: ${JSON.stringify({ error: { message: `Failed to spawn ${binaryName} CLI: ${err.message}` } })}\n\n`);
             res.write('data: [DONE]\n\n');
@@ -448,6 +454,7 @@ function runDaemon(port, expectedKey, backendBin, models, format, spawnArgs) {
               fullText += decoder.write(chunk);
             });
             child.on('close', code => {
+              clearTimeout(watchdog);
               if (res.writableEnded || res.destroyed) return;
               fullText += decoder.end();
               if (code !== 0) {
@@ -483,6 +490,7 @@ function runDaemon(port, expectedKey, backendBin, models, format, spawnArgs) {
               }
             });
             child.on('close', code => {
+              clearTimeout(watchdog);
               if (res.writableEnded || res.destroyed) return;
               buffer += decoder.end();
               if (buffer.trim()) {
@@ -512,6 +520,7 @@ function runDaemon(port, expectedKey, backendBin, models, format, spawnArgs) {
           }
 
           child.on('error', err => {
+            clearTimeout(watchdog);
             if (res.writableEnded || res.destroyed) return;
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: { message: `Failed to spawn ${binaryName} CLI: ${err.message}` } }));

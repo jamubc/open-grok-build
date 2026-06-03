@@ -22,5 +22,12 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jamubc/open-grok-build.git"
-  }
+  },
+  "files": [
+    "tui.js",
+    "bins",
+    "providers",
+    "README.md",
+    "CONTRIBUTING.md"
+  ]
 }

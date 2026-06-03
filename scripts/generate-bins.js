@@ -88,6 +88,30 @@ function main() {
   const manifest = JSON.parse(fs.readFileSync(MANIFEST, 'utf8'));
   fs.mkdirSync(BINS_DIR, { recursive: true });
 
+  // 1. Validate manifest entries to ensure safe names and environment keys
+  for (const [name, entry] of Object.entries(manifest)) {
+    if (!/^[a-z0-9_-]+$/i.test(name)) {
+      throw new Error(`Invalid provider identifier "${name}": must contain only alphanumeric characters, hyphens, or underscores.`);
+    }
+    if (entry.envKey && !/^[A-Z_][A-Z0-9_]*$/.test(entry.envKey)) {
+      throw new Error(`Invalid envKey "${entry.envKey}" for provider "${name}": must be a valid environment variable identifier.`);
+    }
+  }
+
+  // 2. Prune stale generated bins that are no longer in the manifest
+  if (fs.existsSync(BINS_DIR)) {
+    const files = fs.readdirSync(BINS_DIR);
+    for (const file of files) {
+      if (file.startsWith('grok-') && file.endsWith('.js')) {
+        const providerName = file.substring(5, file.length - 3);
+        if (!manifest[providerName]) {
+          fs.unlinkSync(path.join(BINS_DIR, file));
+          console.log(`Pruned stale binary wrapper: ${file}`);
+        }
+      }
+    }
+  }
+
   const binMap = { 'open-grok-build': './tui.js' };
   const written = [];
 

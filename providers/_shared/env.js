@@ -31,7 +31,7 @@ function escapeRegExp(string) {
 function readKey(envFilePath, key) {
   if (!fs.existsSync(envFilePath)) return undefined;
   const existing = fs.readFileSync(envFilePath, 'utf8');
-  const m = existing.match(new RegExp(`^${escapeRegExp(key)}=([^\\r\\n]+)`, 'm'));
+  const m = existing.match(new RegExp(`^${escapeRegExp(key)}=([^\\r\\n]*)`, 'm'));
   return m ? m[1] : undefined;
 }
 
