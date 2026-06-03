@@ -1,0 +1,7 @@
+[model.codex]
+model = "gpt-5.5"
+base_url = "http://127.0.0.1:8319/v1"
+name = "Codex (inline)"
+env_key = "GROK_CODEX_PROXY_API_KEY"
+api_backend = "chat_completions"
+auth_scheme = "bearer"

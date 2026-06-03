@@ -1,0 +1,17 @@
+{
+  "name": "agy-for-grok-build",
+  "version": "1.0.1",
+  "description": "Give Grok Build access to Antigravity CLI OAuth models",
+  "license": "MIT",
+  "bin": {
+    "grok-agy": "bin/grok-agy.js"
+  },
+  "scripts": {
+    "install-proxy": "node lib/install.js",
+    "postinstall": "node lib/install.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
+

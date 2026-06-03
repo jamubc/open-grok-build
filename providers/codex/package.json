@@ -1,0 +1,17 @@
+{
+  "name": "codex-for-grok-build",
+  "version": "1.0.1",
+  "description": "Give Grok Build access to Codex CLI OAuth models",
+  "license": "MIT",
+  "bin": {
+    "grok-codex": "bin/grok-codex.js"
+  },
+  "scripts": {
+    "install-proxy": "node lib/install.js",
+    "postinstall": "node lib/install.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
+

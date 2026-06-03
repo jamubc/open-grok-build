@@ -1,59 +1,102 @@
 # Contributing to open-grok-build
 
-We want to keep this monorepo simple, zero-dependency, and extremely easy to extend. Follow this guide to add support for new language models (e.g. Qwen, Kimi, etc.).
+This project is a single, zero-dependency repository driven by a **provider
+registry**. Adding support for a new model is, for most cases, a matter of
+editing one JSON file and running a generator. There are no submodules and no
+per-provider npm packages.
 
 ---
 
 ## Repository Structure
 
-Each connector lives in its own repository and is linked to `open-grok-build` as a Git submodule:
-
 ```text
 open-grok-build/
-├── tui.js               # Interactive configuration console
-├── README.md
-├── CONTRIBUTING.md
-├── agy/                 # Submodule (Antigravity)
-├── codex/               # Submodule (Codex)
-└── deepseek/            # Submodule (DeepSeek)
+├── tui.js                       # Dynamic TUI — reads providers/providers.json
+├── package.json                 # `bin` map is generated
+├── providers/
+│   ├── providers.json           # Master manifest (source of truth)
+│   ├── _shared/                 # Shared, zero-dependency library
+│   │   ├── env.js               # .env loading
+│   │   ├── config.js            # ~/.grok/config.toml read/patch helpers
+│   │   ├── install.js           # mkdirSafe/writeSecure + installPassthrough()
+│   │   └── proxy.js             # generic inline proxy (deferred stub)
+│   ├── agy/                     # Custom provider (own bin/ + lib/)
+│   └── codex/                   # Custom provider (own bin/ + lib/)
+├── bins/                        # GENERATED + committed (one per manifest entry)
+├── scripts/
+│   ├── generate-bins.js         # manifest → bins/ + package.json bin map
+│   └── install-provider.js      # single install dispatch (TUI + headless)
+└── assets/                      # logos
 ```
 
 ---
 
-## Connector Architecture
+## Provider Types
 
-There are two patterns for adding a new model connector:
-
-### 1. Direct Passthrough (For OpenAI-Compatible APIs)
-If the upstream model provider natively exposes an OpenAI-compatible endpoint (like Qwen or DeepSeek), no proxy server is needed.
-* **Installer (`lib/install.js`)**: Writes the model block to `~/.grok/config.toml` pointing `base_url` directly to the provider's official URL.
-* **Wrapper (`bin/grok-<name>.js`)**: Merely sources the environment key and passes execution directly to the `grok` binary.
-
-### 2. Node-Native Inline Proxy (For Custom/OAuth APIs)
-If the model requires custom token translation, custom headers, or CLI wrapper execution (like Gemini/AGY or Codex), write an inline proxy.
-* **Installer (`lib/install.js`)**: Configures `base_url` to target a dedicated local port (e.g. `8320` for Kimi).
-* **Wrapper (`bin/grok-<name>.js`)**: 
-  1. Starts a lightweight Node.js native `http` server on the assigned port.
-  2. Handles incoming `/v1/chat/completions` and `/v1/models` requests, translating them as needed.
-  3. Spawns the `grok` binary.
-  4. On `grok` exit, closes the server and exits.
+| Type | When to use | Code needed |
+| :--- | :--- | :--- |
+| `passthrough` | Upstream exposes an OpenAI-compatible endpoint (DeepSeek, Qwen, Groq…) | **None** — the manifest entry is sufficient. The generated wrapper runs `grok -m <name>`. |
+| `custom` | Unique auth / protocol / CLI wrapping (AGY, Codex) | A `providers/<name>/` directory with its own `bin/` and `lib/install.js`. May import from `_shared/`. |
+| `proxy` | Needs a generic inline HTTP proxy (format translation) | Reserved — `_shared/proxy.js` is a deferred stub; not yet implemented. |
 
 ---
 
-## How to Add a New Connector
+## Adding a Provider
 
-1. **Create the Repository**: Initialize a new repository on GitHub (e.g. `kimi-for-grok-build`).
-2. **Follow the Standard Files**:
-   * `package.json`: Version set to `1.0.0`, version script `install-proxy` pointing to `node lib/install.js`.
-   * `install.sh`: Thin executable wrapper running `exec node "$(dirname "$0")/lib/install.js" "$@"`.
-   * `lib/install.js`: Setup script to patch `~/.grok/config.toml` and write the binary wrapper.
-   * `bin/grok-<name>.js`: The binary wrapper (direct or inline proxy).
-   * `README.md` and `docs/troubleshooting.md`.
-3. **Submit to Monorepo**:
-   * Clone the `open-grok-build` parent repository.
-   * Add your new connector as a submodule:
-     ```bash
-     git submodule add https://github.com/jamubc/your-connector-for-grok-build your-connector
-     ```
-   * Add the package and status badges to the parent `README.md` table.
-   * Open a PR!
+### Passthrough (OpenAI-compatible) — the common case
+
+1. Add an entry to `providers/providers.json`:
+   ```json
+   "groq": {
+     "type": "passthrough",
+     "name": "Groq",
+     "label": "Groq (LPU)",
+     "description": "Groq LPU Inference Engine",
+     "defaultModel": "llama3-70b-8192",
+     "models": ["llama3-70b-8192", "llama3-8b-8192"],
+     "baseUrl": "https://api.groq.com/openai/v1",
+     "envKey": "GROQ_API_KEY",
+     "logo": "groq_logo.png"
+   }
+   ```
+2. Regenerate: `node scripts/generate-bins.js`
+3. Commit `providers/providers.json`, the new `bins/grok-groq.js`, and `package.json`.
+
+The TUI, headless installer, and `bin` map all pick it up automatically — no code
+changes required.
+
+### Custom (special logic)
+
+1. Create `providers/<name>/` with `lib/install.js` and `bin/grok-<name>.js`
+   (use `providers/agy/` as a template — it can `require('../../_shared/...')`).
+2. Add a manifest entry with `"type": "custom"` and `"dir": "<name>"`, plus the
+   display fields (`name`, `label`, `description`, `defaultModel`, `models`, `logo`).
+3. Regenerate: `node scripts/generate-bins.js` (emits a thin shim in `bins/`).
+4. Commit.
+
+---
+
+## Manifest Fields
+
+| Field | Applies to | Purpose |
+| :--- | :--- | :--- |
+| `type` | all | `passthrough` \| `custom` \| `proxy` |
+| `name` | all | Display name; for passthrough also the TOML `name` field |
+| `label` | all | Short label shown in TUI menus |
+| `description` | all | One-line description |
+| `defaultModel` | all | Default model written to `config.toml` |
+| `models` | all | Selectable models in the TUI |
+| `logo` | all | Filename under `assets/` |
+| `baseUrl` | passthrough | Upstream OpenAI-compatible base URL |
+| `envKey` | passthrough | Environment variable holding the API key |
+| `dir` | custom | Directory name under `providers/` |
+
+---
+
+## Conventions
+
+- **Zero runtime dependencies.** Node's standard library only.
+- **`bins/` is generated.** Never hand-edit files under `bins/`; edit the
+  manifest (or a custom provider's source) and re-run `node scripts/generate-bins.js`.
+- **Generated files are committed** so `npm publish` needs no prepublish step.
+- Open a PR with the manifest change, regenerated artifacts, and a logo in `assets/`.

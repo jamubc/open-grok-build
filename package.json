@@ -5,10 +5,10 @@
   "main": "tui.js",
   "bin": {
     "open-grok-build": "./tui.js",
-    "grok-agy": "./agy/bin/grok-agy.js",
-    "grok-codex": "./codex/bin/grok-codex.js",
-    "grok-deepseek": "./deepseek/bin/grok-deepseek.js",
-    "grok-qwen": "./qwen/bin/grok-qwen.js"
+    "grok-agy": "./bins/grok-agy.js",
+    "grok-codex": "./bins/grok-codex.js",
+    "grok-deepseek": "./bins/grok-deepseek.js",
+    "grok-qwen": "./bins/grok-qwen.js"
   },
   "scripts": {
     "start": "node tui.js",
@@ -22,5 +22,12 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jamubc/open-grok-build.git"
-  }
+  },
+  "files": [
+    "tui.js",
+    "bins",
+    "providers",
+    "README.md",
+    "CONTRIBUTING.md"
+  ]
 }
