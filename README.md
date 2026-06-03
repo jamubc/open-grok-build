@@ -61,9 +61,16 @@ grok-build-providers qwen       # install the Qwen Coder connector
 grok-build-providers all        # install everything
 ```
 
-### Trying it without installing
+### Running without installing
 
-`npx grok-build-providers` is fine for a quick look, and for the **passthrough** connectors (DeepSeek, Qwen) whose launchers are self-contained. It is **not** suitable for day-to-day use of the **inline** connectors (`agy`, `codex`): their launchers point back at the package directory, so once npm purges its temporary `npx` cache they break. For anything beyond a one-off trial, install globally.
+```bash
+npx grok-build-providers
+```
+
+Use `npx` for a quick try without a global install. What works and what does not:
+
+- **DeepSeek, Qwen (passthrough):** fully supported via `npx`. Their launchers are self-contained and only need an API key.
+- **Gemini/AGY, Codex (inline):** unreliable via `npx`. Their launchers reference the package directory, so they break once npm clears its temporary `npx` cache. Use a global install for these.
 
 ---
 
